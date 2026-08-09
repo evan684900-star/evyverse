@@ -71,6 +71,8 @@ header h1 {
   align-items:center;
   cursor:pointer;
   transition:0.3s;
+  text-decoration:none;
+  color:inherit;
 }
 .card:hover {
   border-color:#ff4d6d;
@@ -268,19 +270,19 @@ header h1 {
 <div class="container">
   
   <!-- CASE 1 - PIFOUPAF -->
-  <div class="card" onclick="window.open('https://pifoupaf.vercel.app', '_blank')">
+  <a class="card" href="https://pifoupaf.vercel.app" target="_blank" rel="noopener noreferrer">
     <div class="card-content">
       <div class="card-title">pif ou paf</div>
       <div class="card-coin"></div>
     </div>
-  </div>
+  </a>
 
   <!-- CASE 2 - TEMPLE DU CAILLOU -->
-  <div class="card" onclick="window.open('https://letempleducaillou.vercel.app', '_blank')">
+  <a class="card" href="https://letempleducaillou.vercel.app" target="_blank" rel="noopener noreferrer">
     <div class="card-case2">
       <img src="caillou.png" alt="Temple du Caillou" class="card-case2-img">
     </div>
-  </div>
+  </a>
 
   <!-- CASE 3 VIDE -->
   <div class="card" onclick="showComingSoon('Site 3')">
