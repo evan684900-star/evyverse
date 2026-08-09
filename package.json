@@ -1,0 +1,15 @@
+{
+  "name": "evyverse",
+  "version": "1.0.0",
+  "description": "Le Evyverse - A collection of web projects",
+  "scripts": {
+    "dev": "npx serve .",
+    "build": "echo 'Static site - no build needed'"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@vercel/analytics": "^1.1.1"
+  }
+}
