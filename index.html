@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>evyverse</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+* { margin:0; padding:0; box-sizing:border-box; font-family: 'Segoe UI', sans-serif; }
+body {
+  background:
+    radial-gradient(circle, #000 1px, transparent 1px) #fff;
+  background-size: 20px 20px;
+  color: #222;
+  min-height: 100vh;
+}
+
+@keyframes move-dots {
+  from { background-position: 0 0; }
+  to { background-position: 100px 100px; }
+}
+
+/* FADE IN AU SCROLL */
+.cache {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: 0.8s;
+}
+.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ajout : classe pour modifier la police d'une phrase */
+.custom-font {
+  font-family: 'Courier New', monospace;
+  font-size:16px;
+  color:#555;
+}
+
+/* TITRE AU MILIEU */
+header {
+  text-align:center;
+  padding:60px 20px 40px;
+}
+header h1 {
+  font-size:42px;
+  font-weight:700;
+  letter-spacing:2px;
+}
+
+/* GRILLE 2x2 = 4 CASES */
+.container {
+  display:grid;
+  grid-template-columns: repeat(2, 1fr); /* 2 colonnes */
+  gap:30px;
+  max-width:900px;
+  margin:0 auto;
+  padding:0 40px 60px;
+}
+
+/* CASE VIDE */
+.card {
+  background:#f5f5f5;
+  border:2px dashed #969696;
+  border-radius:20px;
+  height:250px;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  cursor:pointer;
+  transition:0.3s;
+}
+.card:hover {
+  border-color:#ff4d6d;
+  background:#fff0f3;
+  transform:scale(1.03);
+}
+.card .plus {
+  font-size:60px;
+  color:#bbb;
+  font-weight:100;
+}
+.card p {
+  margin-top:10px;
+  color:#888;
+  font-size:14px;
+}
+
+/* STYLING CASE 1 */
+.card-content {
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  gap:15px;
+}
+
+.card-title {
+  font-size:48px;
+  font-weight:900;
+  color:#2563eb;
+  text-align:center;
+}
+
+.card-coin {
+  width:50px;
+  height:50px;
+  background: radial-gradient(circle at 30% 30%, #ffd700, #ffed4e, #daa520);
+  border-radius:50%;
+  border: 2px solid #b8860b;
+  box-shadow: 
+    inset -2px -2px 5px rgba(0,0,0,0.2),
+    inset 2px 2px 5px rgba(255,255,255,0.4),
+    0 4px 8px rgba(0,0,0,0.2);
+}
+
+/* IMAGE CASE 2 */
+.card img {
+  width:100%;
+  height:100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+/* CASE 2 CONTENT */
+.card-case2 {
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  width:100%;
+  height:100%;
+  gap:10px;
+  padding:20px;
+}
+
+.card-case2-title {
+  font-size:24px;
+  font-weight:900;
+  color:#333;
+  text-align:center;
+  word-wrap:break-word;
+  overflow:hidden;
+}
+
+.card-case2-img {
+  width:50px;
+  height:50px;
+  object-fit: contain;
+}
+
+/* MODALE POUR OUVRIR LE SITE */
+#modal {
+  display:none;
+  position:fixed; top:0; left:0; width:100%; height:100%;
+  background:rgba(0,0,0,0.8); z-index:1000;
+}
+#modal-content {
+  width:90%; height:90%; margin:2.5% auto;
+  background:white; border-radius:10px; position:relative;
+}
+#modal iframe {
+  width:100%; height:100%; border:none; border-radius:10px;
+}
+#close {
+  position:absolute; top:15px; right:25px;
+  font-size:35px; color:#333; cursor:pointer; z-index:1001;
+}
+
+#easter-overlay {
+  display:none;
+  position:fixed;
+  inset:0;
+  background: url('tree.jpg') center/cover no-repeat;
+  z-index:2000;
+}
+
+#easter-overlay.active {
+  display:block;
+}
+
+/* MEDIA QUERIES - RESPONSIVE DESIGN */
+@media (max-width: 768px) {
+  /* En-tête mobile */
+  header {
+    padding:40px 20px 30px;
+  }
+  header h1 {
+    font-size:32px;
+    letter-spacing:1px;
+  }
+  header h6 {
+    font-size:12px;
+  }
+
+  /* Grille: 1 colonne sur mobile */
+  .container {
+    grid-template-columns: 1fr;
+    gap:20px;
+    padding:0 20px 60px;
+    max-width:100%;
+  }
+
+  /* Cartes plus petites */
+  .card {
+    height:200px;
+    border-radius:15px;
+  }
+  .card .plus {
+    font-size:50px;
+  }
+  .card p {
+    font-size:13px;
+  }
+
+
+
+  /* Modal ajusté */
+  #modal-content {
+    width:95%;
+    height:95%;
+    margin:2.5% auto;
+  }
+  #close {
+    font-size:28px;
+    top:10px;
+    right:15px;
+  }
+}
+
+@media (max-width: 480px) {
+  /* Très petit écran */
+  header {
+    padding:30px 15px 20px;
+  }
+  header h1 {
+    font-size:26px;
+  }
+  header h6 {
+    font-size:11px;
+  }
+
+  .container {
+    padding:0 15px 60px;
+  }
+
+  .card {
+    height:180px;
+  }
+  .card .plus {
+    font-size:45px;
+  }
+
+
+}
+</style>
+</head>
+<body>
+
+<header>
+  <h1 class="cache">Le Evyverse</h1>
+  <br>
+  <h6 class="cache"><span class="custom-font">(oui j'ai pas trouvé mieux)</span></h6>
+</header>
+
+<div class="container">
+  
+  <!-- CASE 1 - PIFOUPAF -->
+  <div class="card" onclick="window.open('https://pifoupaf.vercel.app', '_blank')">
+    <div class="card-content">
+      <div class="card-title">pif ou paf</div>
+      <div class="card-coin"></div>
+    </div>
+  </div>
+
+  <!-- CASE 2 - TEMPLE DU CAILLOU -->
+  <div class="card" onclick="window.open('https://letempleducaillou.vercel.app', '_blank')">
+    <div class="card-case2">
+      <img src="caillou.png" alt="Temple du Caillou" class="card-case2-img">
+    </div>
+  </div>
+
+  <!-- CASE 3 VIDE -->
+  <div class="card" onclick="showComingSoon('Site 3')">
+    <div class="plus">+</div>
+    <p>à venir...</p>
+  </div>
+
+  <!-- CASE 4 VIDE -->
+  <div class="card" onclick="showComingSoon('Site 4')">
+    <div class="plus">+</div>
+    <p>à venir...</p>
+  </div>
+
+</div>
+
+<!-- AUDIO DE FOND -->
+<audio id="son-de-fond" src="waiting-room.mp3" preload="auto" loop autoplay></audio>
+<audio id="easter-audio" src="well there is a man here.mp3" preload="auto" loop></audio>
+
+<!-- MODALE -->
+<div id="modal">
+  <div id="modal-content">
+    <span id="close" onclick="closeSite()">&times;</span>
+    <iframe id="site-frame" src=""></iframe>
+    <div id="modal-text" style="display:none; width:100%; height:100%; display:flex; justify-content:center; align-items:center; font-size:32px; text-align:center; padding:40px; color:#666;"></div>
+  </div>
+</div>
+
+<div id="easter-overlay"></div>
+
+<script>
+function openSite(url, titre) {
+  document.getElementById('site-frame').src = url;
+  document.getElementById('site-frame').style.display = 'block';
+  document.getElementById('modal-text').style.display = 'none';
+  document.getElementById('modal').style.display = 'block';
+  document.querySelector('header h1').textContent = titre;
+}
+
+function closeSite() {
+  document.getElementById('modal').style.display = 'none';
+  document.getElementById('site-frame').src = '';
+  document.getElementById('modal-text').style.display = 'none';
+  document.querySelector('header h1').textContent = 'Le Evyverse';
+}
+
+let easterEggActive = false;
+let comingSoonOpen = false;
+let lastComingSoonClose = 0;
+
+const backgroundAudio = document.getElementById('son-de-fond');
+const easterAudio = document.getElementById('easter-audio');
+backgroundAudio.volume = 0.2;
+
+function showComingSoon(titre) {
+  document.getElementById('modal').style.display = 'block';
+  document.getElementById('site-frame').style.display = 'none';
+  document.getElementById('modal-text').style.display = 'flex';
+  document.getElementById('modal-text').textContent = 'Rien à voir ici pour l\'instant ¯\\_(ツ)_/¯';
+  document.querySelector('header h1').textContent = titre;
+  comingSoonOpen = true;
+}
+
+document.addEventListener('mousemove', e => {
+  const x = e.clientX / 10;
+  const y = e.clientY / 10;
+  document.body.style.backgroundPosition = `${x}px ${y}px`;
+});
+
+// Fermer avec Echap
+function handleEscapeKey(e) {
+  if (e.key !== 'Escape') return;
+
+  if (easterEggActive) {
+    exitEasterEggWithEscape(e);
+    return;
+  }
+
+  if (comingSoonOpen) {
+    closeSite();
+    const now = Date.now();
+    if (now - lastComingSoonClose < 1200) {
+      if (Math.random() < 1/50) {
+        triggerEasterEgg();
+      }
+    }
+    lastComingSoonClose = now;
+    comingSoonOpen = false;
+    return;
+  }
+
+  closeSite();
+}
+
+document.addEventListener('keydown', handleEscapeKey);
+
+// Autoplay audio sur première interaction utilisateur
+function startBackgroundAudio() {
+  if (!easterEggActive) {
+    backgroundAudio.play().catch((error) => {
+      console.warn('Lecture audio bloquée par le navigateur :', error);
+    });
+  }
+}
+document.addEventListener('click', startBackgroundAudio, { once: true });
+document.addEventListener('keydown', startBackgroundAudio, { once: true });
+
+function triggerEasterEgg() {
+  easterEggActive = true;
+  document.getElementById('easter-overlay').classList.add('active');
+  document.getElementById('modal').style.display = 'none';
+  document.body.style.overflow = 'hidden';
+  if (!backgroundAudio.paused) backgroundAudio.pause();
+  easterAudio.currentTime = 0;
+  easterAudio.play().catch((error) => {
+    console.warn('Lecture easter audio bloquée par le navigateur :', error);
+  });
+}
+
+function exitEasterEggWithEscape(e) {
+  if (e.key === 'Escape' && easterEggActive) {
+    document.getElementById('easter-overlay').classList.remove('active');
+    document.body.style.overflow = '';
+    easterAudio.pause();
+    easterEggActive = false;
+    startBackgroundAudio();
+  }
+}
+
+// Fade in au scroll
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach((entry) => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add("visible");
+    } 
+  });
+});
+document.querySelectorAll('.cache').forEach(el => observer.observe(el));
+
+
+</script>
+</body>
+</html>
