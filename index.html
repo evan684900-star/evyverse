@@ -297,8 +297,12 @@ header h1 {
 </div>
 
 <!-- AUDIO DE FOND -->
-<audio id="son-de-fond" src="waiting-room.mp3" preload="auto" loop autoplay></audio>
-<audio id="easter-audio" src="well there is a man here.mp3" preload="auto" loop></audio>
+<audio id="son-de-fond" preload="auto" loop autoplay>
+  <source src="waiting-room.mp3" type="audio/mpeg">
+</audio>
+<audio id="easter-audio" preload="auto" loop>
+  <source src="well-there-is-a-man-here.m4a" type="audio/mp4">
+</audio>
 
 <!-- MODALE -->
 <div id="modal">
